@@ -181,7 +181,7 @@ public class Main {
         System.out.println("Want to parse string (Y/N)?");
         String  move = scanner1.next();
         if (move.equals("N"))
-            isImplicitExit();
+            System.exit(1);
         LL1Check ll1Check = new LL1Check(charList,map);
         if(ll1Check.isLL1())
         {
