@@ -44,7 +44,8 @@ public class LeftFactoring {
                 j = 0;
                 if (productionAi.size() == 1)
                     continue;
-                while (true) {
+                int ex=1;
+                while (ex==1) {
                     flag = 0;
                     Map<Character, Integer> m = new HashMap<>();
                     int max = 0;
@@ -79,11 +80,13 @@ public class LeftFactoring {
                     } else {
                         if (max > 1)
                             sb.append(max_k);
+                        else
+                            ex=0;
                         // System.out.println(max_k);
                         j++;
                     }
                 }
-                //System.out.println(sb.toString());
+               // System.out.println(sb.toString());
                 if(sb.length()!=0)
                     end=0;
                 int add = 1;

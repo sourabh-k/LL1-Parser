@@ -12,6 +12,7 @@ public class Utility {
 
      static Map<String,List<String>> map = new HashMap<String,List<String>>();
      static ArrayList<String> charList = new ArrayList<String>();
+     static  ArrayList<String> terminalList = new ArrayList<>();
      static Map<String, ArrayList<String>> m = new HashMap<>();
      static Map<String, ArrayList<String>> follow = new HashMap<>();
     static ArrayList<String> firstSet(String pr)
@@ -54,5 +55,28 @@ public class Utility {
     static ArrayList<String> followSet(String variable)
     {
         return follow.get(variable);
+    }
+
+    static void initialiseTerminals()
+    {
+        int i,j,k;
+        for(i=0;i<charList.size();i++)
+        {
+            String currentAi = charList.get(i);
+            List<String> productionAi = map.get(currentAi);
+            for(j=0;j<productionAi.size();j++)
+            {
+                String currentClause =productionAi.get(j);
+                for(k=0;k<currentClause.length();k++)
+                {
+                    if(!charList.contains(currentClause.charAt(k)+"") && !terminalList.contains(currentClause.charAt(k)+""))
+                    {
+                        if(!(currentClause.charAt(k)+"").equals("e"))
+                        terminalList.add(currentClause.charAt(k)+"");
+                    }
+                }
+            }
+        }
+       // System.out.println(terminalList);
     }
 }

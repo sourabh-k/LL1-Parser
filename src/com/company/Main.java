@@ -1,6 +1,11 @@
 package com.company;
 
+import java.io.*;
 import java.util.*;
+
+import static javafx.application.Platform.exit;
+import static javafx.application.Platform.isImplicitExit;
+
 /**
  * Created by Sourabh on 8-Feb-17.
  * Main is oriented to remove left recursion from the productions both immediate and non-immediate
@@ -10,14 +15,23 @@ import java.util.*;
 public class Main {
 
     public static void main(String[] args) {
-	// write your code here
+        Stack<String> stack = new Stack<>();
         int i,j,k,n;
         ArrayList<String> production =new ArrayList<String>();
         Map<String,List<String>> map = new HashMap<String,List<String>>();
         ArrayList<String> charList = new ArrayList<String>();
-        System.out.println("Enter the number of production");
-        Scanner scanner =new Scanner(System.in);
-        n= scanner.nextInt();
+       // System.out.println("Enter the number of production");
+       // Scanner scanner =new Scanner("input.txt");
+        Scanner scanner = null;
+        try {
+            scanner = new Scanner(new File("input.txt"));
+        } catch (FileNotFoundException e1) {
+            e1.printStackTrace();
+        }
+        n=0;
+        if (scanner != null) {
+            n= scanner.nextInt();
+        }
         for(i=0;i<n;i++)
         {
             production.add(scanner.next());
@@ -110,6 +124,8 @@ public class Main {
                else
                {
                    String tempKey = (char)key+"";
+                   if(temp.equals("e"))
+                       temp="";
                    beta.add(temp+tempKey);
                }
 
@@ -140,6 +156,9 @@ public class Main {
             }
             System.out.println();
         }
+        Utility.charList = charList;
+        Utility.map = map;
+        Utility.initialiseTerminals();
         FirstAndFollowSet Fs = new FirstAndFollowSet(map,charList);
         Fs.firstAndFollowSet();
         Map<String, ArrayList<String>> first = new HashMap<>();                                 // First Set
@@ -158,8 +177,25 @@ public class Main {
             System.out.println(follow.get(charList.get(i)));
         }
 
+        Scanner scanner1 = new Scanner(System.in);
+        System.out.println("Want to parse string (Y/N)?");
+        String  move = scanner1.next();
+        if (move.equals("N"))
+            isImplicitExit();
         LL1Check ll1Check = new LL1Check(charList,map);
-        System.out.println(ll1Check.isLL1());
+        if(ll1Check.isLL1())
+        {
+            System.out.println("Grammer is LL1");
+            System.out.println("Enter input string");
+            String string = scanner1.next();
+            PredictiveParser predictiveParser = new PredictiveParser(charList,map);
+            predictiveParser.computeParseTable();
+            System.out.println(predictiveParser.isParseAble(string));
+        }
+        else
+        {
+            System.out.println("Grammer is not LL1");
+        }
 
     }
 }

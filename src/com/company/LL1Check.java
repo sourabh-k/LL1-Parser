@@ -18,8 +18,6 @@ public class LL1Check {
     {
         int i,j,k,l,m,x,y,sum;
         boolean res = true;
-        System.out.println(Utility.firstSet("ET"));
-        System.out.println(Utility.followSet("E"));
         for(i=0;i<charList.size();i++)
         {
             String currentVariable = charList.get(i);

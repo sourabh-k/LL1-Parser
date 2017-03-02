@@ -57,7 +57,7 @@ public class FirstAndFollowSet {
                     while (con >= 0 && con < productionAi.get(j).length()) {
                         char start = productionAi.get(j).charAt(con);
                         int tempCon = con;
-                        if (!(start >= 'a' && start <= 'z'))
+                        if (charList.contains(start+"") )//start >= 'a' && start <= 'z'))
                         //if(charList.contains(start+""))
                         {
                             String tempString = start + "";
@@ -111,9 +111,9 @@ public class FirstAndFollowSet {
         }
 
 
+       // System.out.println(m);
+
         // Follow ahead be cautious :)
-        Utility.charList = charList;
-        Utility.map = map;
         Utility.m =m;
         ArrayList<String> temp = new ArrayList<>();
         temp.add("$");
@@ -152,7 +152,7 @@ public class FirstAndFollowSet {
                 }
             }
             int flag;
-           // System.out.println(follow.values());
+           //System.out.println(follow);
 
         while (true)
         {
@@ -164,32 +164,35 @@ public class FirstAndFollowSet {
                 for(j=0;j<productionAi.size();j++)
                 {
                     String current = productionAi.get(j);
-                    for(k=0;k<current.length()-1;k++)
+                    for(k=0;k<current.length()-1 ;k++)
                     {
-                        String pass= current.substring(k+1,current.length());
-                       // System.out.print("Pass = " + pass);
-                        ArrayList<String> res= Utility.firstSet(pass);
-                        //System.out.println("   " + res);
-                        Scanner scanner = new Scanner(System.in);
-                        //int fake = scanner.nextInt();
-                        if(res.contains("e"))
-                        {
-                            ArrayList<String> followB = follow.get(current.charAt(k)+"") ;
-                            ArrayList<String> followA = follow.get(ai);
-                            if(followA==null)
-                                followA = new ArrayList<>();
-                            if(followB == null)
-                                followB = new ArrayList<>();
-                            for(int ii =0;ii<followA.size();ii++)
-                            {
-                                    if(!followB.contains(followA.get(ii)) && !followB.contains(followA.get(ii)))
-                                    {
-                                        followB.add(followA.get(ii));
-                                        flag=0;
-                                    }
-                            }
-                            follow.replace(current.charAt(k)+"",followB);
-                        }
+                       if(charList.contains(current.charAt(k)+""))
+                       {
+                           String pass= current.substring(k+1,current.length());
+                           // System.out.print("Pass = " + pass);
+                           ArrayList<String> res= Utility.firstSet(pass);
+                           //System.out.println("   " + res);
+                           Scanner scanner = new Scanner(System.in);
+                           //int fake = scanner.nextInt();
+                           if(res.contains("e"))
+                           {
+                               ArrayList<String> followB = follow.get(current.charAt(k)+"") ;
+                               ArrayList<String> followA = follow.get(ai);
+                               if(followA==null)
+                                   followA = new ArrayList<>();
+                               if(followB == null)
+                                   followB = new ArrayList<>();
+                               for(int ii =0;ii<followA.size();ii++)
+                               {
+                                   if(!followB.contains(followA.get(ii)))
+                                   {
+                                       followB.add(followA.get(ii));
+                                       flag=0;
+                                   }
+                               }
+                               follow.replace(current.charAt(k)+"",followB);
+                           }
+                       }
                     }
                     if(charList.contains(current.charAt(current.length()-1)+""))
                     {
@@ -202,16 +205,16 @@ public class FirstAndFollowSet {
                             followB  = new ArrayList<>();
                         for(int ii =0;ii<followA.size();ii++)
                         {
-                            if(!followB.contains(followA.get(ii)) && !followB.contains(followA.get(ii))) {
+                            if(!followB.contains(followA.get(ii)) || followB.size()==0) {
                                 followB.add(followA.get(ii));
                                 flag = 0;
                             }
 
                         }
-                        if (follow.containsKey(aj))
-                            follow.replace(ai,followB);
+                        if (follow.containsKey(current.charAt(current.length()-1)+""))
+                            follow.replace(current.charAt(current.length()-1)+"",followB);
                         else
-                            follow.put(ai,followB);
+                            follow.put(current.charAt(current.length()-1)+"",followB);
 
                     }
                 }
