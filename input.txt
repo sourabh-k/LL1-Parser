@@ -1,4 +1,5 @@
 3
-A->BC|a|d
-B->CA|b
-C->Aabc|a|Ac
+S->1AB|e
+A->1AC|0c
+B->0S
+C->1
